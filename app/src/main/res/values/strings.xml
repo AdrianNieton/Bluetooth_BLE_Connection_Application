@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">nrf52840_BLEConnection</string>
+    <string name="refresh_devices">Scan devices</string>
+    <string name="bluetooth_not_supported">This device doesn\'t support bluetooth</string>
+    <string name="bt_device_not_founded">No paired bluetooth devices found</string>
+    <string name="bt_enabled">Bluetooth has been enabled</string>
+    <string name="bt_disabled">Bluetooth has been disabled</string>
+    <string name="bt_cancelled">Bluetooth enabling has been canceled</string>
+</resources>
