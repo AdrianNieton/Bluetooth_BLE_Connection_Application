@@ -6,4 +6,6 @@
     <string name="bt_enabled">Bluetooth has been enabled</string>
     <string name="bt_disabled">Bluetooth has been disabled</string>
     <string name="bt_cancelled">Bluetooth enabling has been canceled</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cloud_title">Data Cloud</string>
 </resources>

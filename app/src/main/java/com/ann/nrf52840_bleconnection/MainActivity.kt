@@ -2,26 +2,25 @@ package com.ann.nrf52840_bleconnection
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothManager
-import android.bluetooth.le.BluetoothLeScanner
-import android.bluetooth.le.ScanCallback
-import android.bluetooth.le.ScanResult
 import android.content.*
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
+import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ann.nrf52840_bleconnection.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class MainActivity : AppCompatActivity(), OnClickListener, OnReceiveListener {
+class MainActivity : AppCompatActivity(), OnClickListener, OnReceiveListener, MainAux {
 
     private lateinit var mBinding: ActivityMainBinding
     private lateinit var mAdapter: RecyclerViewAdapter
@@ -31,6 +30,8 @@ class MainActivity : AppCompatActivity(), OnClickListener, OnReceiveListener {
     private val mBTService = BluetoothService(this)
 
     private val REQUEST_ACCESS_FINE_LOCATION = 102
+
+
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,11 +44,50 @@ class MainActivity : AppCompatActivity(), OnClickListener, OnReceiveListener {
         setupRecyclerView()
 
         mBinding.refreshButton.setOnClickListener {
-            getDevices()
-            mBTService.discoverDevices()
-            mBLEScanner.scanLeDevice()
+//            getDevices()
+//            mBTService.discoverDevices()
+//            mBLEScanner.scanLeDevice()
+            getConnection()
         }
 
+        mBinding.fab.setOnClickListener {
+            launchCloudFragment()
+        }
+    }
+
+
+    private fun launchCloudFragment() {
+        val fragment = CloudFragment()
+
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        fragmentTransaction.add(R.id.clRoot, fragment)
+        fragmentTransaction.addToBackStack(null) //Destruir fragment al dar hacia atras
+        fragmentTransaction.commit()
+
+        //mBinding.fab.hide()
+        hideFab()
+    }
+
+    override fun hideFab(isVisible: Boolean) {
+        if (isVisible) {
+            mBinding.fab.show()
+            mBinding.refreshButton.visibility = View.VISIBLE
+
+        } else {
+            mBinding.fab.hide()
+            mBinding.refreshButton.visibility = View.GONE
+        }
+    }
+
+    private fun getConnection() {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO){
+                val db = Database()
+                db.dbConn()
+            }
+        }
     }
 
     private fun setupRecyclerView() {

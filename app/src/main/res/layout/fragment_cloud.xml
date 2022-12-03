@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CloudFragment">
+
+
+    <TextView
+        android:id="@+id/tvTemperature"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Mean Temperature:"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvResultTemperature"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvResultTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="50"
+        app:layout_constraintStart_toEndOf="@id/tvTemperature"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:paddingBottom="8dp"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/tvHumidity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Mean Humidity:"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"
+        android:layout_marginLeft="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvResultHumidity"
+        app:layout_constraintTop_toBottomOf="@id/tvTemperature"/>
+
+    <TextView
+        android:id="@+id/tvResultHumidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toEndOf="@id/tvHumidity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvResultTemperature"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/tvStdT"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Temperature σ:"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"
+        android:layout_marginLeft="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvStdTResult"
+        app:layout_constraintTop_toBottomOf="@id/tvHumidity"/>
+
+    <TextView
+        android:id="@+id/tvStdTResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toEndOf="@id/tvStdT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvResultHumidity"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/tvStdH"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Humidity σ:"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"
+        android:layout_marginLeft="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvStdHResult"
+        app:layout_constraintTop_toBottomOf="@id/tvStdT"/>
+
+    <TextView
+        android:id="@+id/tvStdHResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toEndOf="@id/tvStdH"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvStdTResult"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/tvMinT"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Min Temperature:"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"
+        android:layout_marginLeft="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvMinTResult"
+        app:layout_constraintTop_toBottomOf="@id/tvStdH"/>
+
+    <TextView
+        android:id="@+id/tvMinTResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toEndOf="@id/tvMinT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvStdHResult"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/tvMinH"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Min Humidity:"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"
+        android:layout_marginLeft="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvMinHResult"
+        app:layout_constraintTop_toBottomOf="@id/tvMinT"/>
+
+    <TextView
+        android:id="@+id/tvMinHResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toEndOf="@id/tvMinH"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMinTResult"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/tvMaxT"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Max Temperature:"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"
+        android:layout_marginLeft="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvMaxTResult"
+        app:layout_constraintTop_toBottomOf="@id/tvMinH"/>
+
+    <TextView
+        android:id="@+id/tvMaxTResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toEndOf="@id/tvMaxT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMinHResult"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/tvMaxH"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Max Humidity:"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"
+        android:layout_marginLeft="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvMaxHResult"
+        app:layout_constraintTop_toBottomOf="@id/tvMaxT"/>
+
+    <TextView
+        android:id="@+id/tvMaxHResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toEndOf="@id/tvMaxH"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMaxTResult"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textSize="30dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
