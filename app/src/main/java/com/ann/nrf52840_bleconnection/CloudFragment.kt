@@ -1,22 +1,31 @@
 package com.ann.nrf52840_bleconnection
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import com.ann.nrf52840_bleconnection.databinding.FragmentCloudBinding
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class CloudFragment : Fragment() {
+import com.ann.nrf52840_bleconnection.databinding.FragmentCloudBinding
+import com.google.common.math.Stats
+import java.text.FieldPosition
+import java.text.Format
+import java.text.ParsePosition
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.math.pow
+import kotlin.math.round
+import kotlin.math.sqrt
+
+class CloudFragment : Fragment(), MainAux {
 
     private lateinit var mBinding: FragmentCloudBinding
     private var mActivity: MainActivity? = null
-    val db = Database()
+    private val db = Database()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -31,22 +40,35 @@ class CloudFragment : Fragment() {
         mActivity = activity as? MainActivity
         mActivity?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mActivity?.supportActionBar?.title = getString(R.string.cloud_title)
-
         setHasOptionsMenu(true)
 
-        val minT = db.getMinTemperatureValue()
-        val minH = db.getMinHumidityValue()
-        val maxT = db.getMaxTemperatureValue()
-        val maxH = db.getMaxHumidityValue()
-        val meanT = db.getMeanTemperatureValue()
-        val meanH = db.getMeanHumidityValue()
-        val varianceT = db.getVarianceTemperatureValue()
-        val varianceH = db.getVarianceHumidityValue()
+
+        mBinding.fab2.setOnClickListener { launchPlotFragment() }
+
+        val result = db.getData()
+        val temperatureList = arrayListOf<Float>()
+        val humidityList = arrayListOf<Float>()
+
+        // Print results from select statement
+        while (result!!.next()) {
+            temperatureList.add(result.getFloat(1))
+            humidityList.add(result.getFloat(2))
+        }
+
+        val minT = Collections.min(temperatureList).toString()
+        val minH =  Collections.min(humidityList).toString()
+        val maxT = Collections.max(temperatureList).toString()
+        val maxH = Collections.max(humidityList).toString()
+        val meanT = round(Stats.meanOf(temperatureList)).toString()
+        val meanH = round(Stats.meanOf(humidityList)).toString()
+        val varianceT = round(calculateStandardDeviation(temperatureList)).toString()
+        val varianceH = round(calculateStandardDeviation(humidityList)).toString()
 
         showMinValues(minT, minH)
         showMaxValues(maxT, maxH)
         showMeanValues(meanT, meanH)
         showVarianceValues(varianceT,varianceH)
+
     }
 
     private fun showVarianceValues(varianceT: String, varianceH: String) {
@@ -69,6 +91,26 @@ class CloudFragment : Fragment() {
         mBinding.tvMinHResult.text = minH
     }
 
+    fun calculateStandardDeviation(array: ArrayList<Float>): Double {
+
+        // get the sum of array
+        var sum = 0.0
+        for (i in array) {
+            sum += i
+        }
+
+        // get the mean of array
+        val length = array.size
+        val mean = sum / length
+
+        // calculate the standard deviation
+        var standardDeviation = 0.0
+        for (num in array) {
+            standardDeviation += (num - mean).pow(2.0)
+        }
+        return sqrt(standardDeviation / length)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -85,6 +127,28 @@ class CloudFragment : Fragment() {
     private fun hideKeyboard() {
         val imm = mActivity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+    }
+
+    private fun launchPlotFragment() {
+        val fragment = PlotFragment()
+
+        val fragmentManager = mActivity?.supportFragmentManager
+        val fragmentTransaction = fragmentManager?.beginTransaction()
+
+        fragmentTransaction?.add(R.id.clRoot, fragment)
+        fragmentTransaction?.addToBackStack(null) //Destruir fragment al dar hacia atras
+        fragmentTransaction?.commit()
+
+        //mBinding.fab.hide()
+        hideFab()
+    }
+
+    override fun hideFab(isVisible: Boolean) {
+        if (!isVisible) {
+            mBinding.fab2.show()
+        } else {
+            mBinding.fab2.hide()
+        }
     }
 
     override fun onDestroyView() {

@@ -50,9 +50,7 @@ class MainActivity : AppCompatActivity(), OnClickListener, OnReceiveListener, Ma
             getConnection()
         }
 
-        mBinding.fab.setOnClickListener {
-            launchCloudFragment()
-        }
+        mBinding.fab.setOnClickListener { launchCloudFragment() }
     }
 
 
