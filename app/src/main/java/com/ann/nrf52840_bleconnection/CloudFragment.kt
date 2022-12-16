@@ -1,31 +1,36 @@
 package com.ann.nrf52840_bleconnection
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.coroutineScope
 
 import com.ann.nrf52840_bleconnection.databinding.FragmentCloudBinding
 import com.google.common.math.Stats
-import java.text.FieldPosition
-import java.text.Format
-import java.text.ParsePosition
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.sqrt
+import kotlin.random.Random.Default.nextFloat
 
 class CloudFragment : Fragment(), MainAux {
 
     private lateinit var mBinding: FragmentCloudBinding
     private var mActivity: MainActivity? = null
     private val db = Database()
+
+    private val newTemperatures = mutableListOf<Float>()
+    private val newHumidity = mutableListOf<Float>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -69,6 +74,31 @@ class CloudFragment : Fragment(), MainAux {
         showMeanValues(meanT, meanH)
         showVarianceValues(varianceT,varianceH)
 
+    }
+
+    private fun insertNewValues() {
+        lifecycle.coroutineScope.launch {
+            withContext(Dispatchers.IO) {
+                var randomTemp: Float
+                var randomHum: Float
+                while (newTemperatures.size < 5 || newHumidity.size < 5) {
+                    randomTemp = nextFloat()
+                    randomHum = nextFloat()
+
+                    if (randomTemp <= 0.5 && newTemperatures.size < 5) {
+                        randomTemp = (randomTemp*100)
+                        newTemperatures.add(randomTemp)
+                    }
+
+                    if (randomHum <= 0.5 && newHumidity.size < 5) {
+                        randomHum = (randomHum*100)
+                        newHumidity.add(randomHum)
+                    }
+                }
+
+                db.insertData(newTemperatures, newHumidity)
+            }
+        }
     }
 
     private fun showVarianceValues(varianceT: String, varianceH: String) {
@@ -163,5 +193,11 @@ class CloudFragment : Fragment(), MainAux {
 
         setHasOptionsMenu(false)
         super.onDestroy()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        insertNewValues()
     }
 }

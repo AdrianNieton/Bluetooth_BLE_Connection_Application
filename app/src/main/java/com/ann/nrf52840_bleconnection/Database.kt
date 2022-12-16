@@ -35,9 +35,17 @@ class Database {
         return null
     }
 
-    fun insertData() {
+    fun insertData(newTemperatures: MutableList<Float>, newHumidity: MutableList<Float>) {
+        val connection = dbConn()
+        val insertStatement: PreparedStatement = (connection?.prepareStatement("INSERT INTO sensor (temperature, humidity) VALUES (?, ?);")
+            ?: null) as PreparedStatement
 
-
+        newTemperatures.zip(newHumidity).forEach { pair ->
+            insertStatement.setFloat(1, pair.component1())
+            insertStatement.setFloat(2, pair.component2())
+            Log.i("Insert", pair.component1().toString())
+            insertStatement.executeUpdate()
+        }
     }
 
     fun getData(): ResultSet? {

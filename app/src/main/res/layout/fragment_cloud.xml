@@ -222,7 +222,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_padding_default"
-        android:src="@drawable/ic_cloud_foreground"
+        android:src="@drawable/ic_plot_foreground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:maxImageSize="60dp" />
