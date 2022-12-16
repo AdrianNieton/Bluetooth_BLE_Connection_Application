@@ -59,20 +59,21 @@ class CloudFragment : Fragment(), MainAux {
             temperatureList.add(result.getFloat(1))
             humidityList.add(result.getFloat(2))
         }
-
-        val minT = Collections.min(temperatureList).toString()
-        val minH =  Collections.min(humidityList).toString()
-        val maxT = Collections.max(temperatureList).toString()
-        val maxH = Collections.max(humidityList).toString()
-        val meanT = round(Stats.meanOf(temperatureList)).toString()
-        val meanH = round(Stats.meanOf(humidityList)).toString()
-        val varianceT = round(calculateStandardDeviation(temperatureList)).toString()
-        val varianceH = round(calculateStandardDeviation(humidityList)).toString()
-
-        showMinValues(minT, minH)
-        showMaxValues(maxT, maxH)
-        showMeanValues(meanT, meanH)
-        showVarianceValues(varianceT,varianceH)
+        if (temperatureList.isNotEmpty()){
+            val minT = Collections.min(temperatureList).toString()
+            val minH =  Collections.min(humidityList).toString()
+            val maxT = Collections.max(temperatureList).toString()
+            val maxH = Collections.max(humidityList).toString()
+            val meanT = round(Stats.meanOf(temperatureList)).toString()
+            val meanH = round(Stats.meanOf(humidityList)).toString()
+            val varianceT = round(calculateStandardDeviation(temperatureList)).toString()
+            val varianceH = round(calculateStandardDeviation(humidityList)).toString()
+            showMinValues(minT, minH)
+            showMaxValues(maxT, maxH)
+            showMeanValues(meanT, meanH)
+            showVarianceValues(varianceT,varianceH)
+        }
+        //db.removeData()
 
     }
 
